@@ -69,6 +69,16 @@ open class PluggableApplicationDelegate: UIResponder, UIApplicationDelegate {
         return result
     }
     
+    @available(iOS 6.0, *)
+    open func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        for service in __services {
+            if let orientation = service.application?(application, supportedInterfaceOrientationsFor: window) {
+                return orientation
+            }
+        }
+        return .all
+    }
+    
     @available(iOS 3.0, *)
     open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         var result = false
